@@ -1,20 +1,9 @@
-# Day 11 — Python vs JavaScript: Text Splitters
+﻿# Day 11 — Python vs JavaScript: Text Splitters
 
 ---
 
 ## length_based.py → length_based.js
 
-**Python (splits a PDF):**
-```python
-from langchain.text_splitter import CharacterTextSplitter
-from langchain_community.document_loaders import PyPDFLoader
-
-loader = PyPDFLoader('dl-curriculum.pdf')
-docs = loader.load()
-splitter = CharacterTextSplitter(chunk_size=200, chunk_overlap=0, separator='')
-result = splitter.split_documents(docs)
-print(result[1].page_content)
-```
 **JavaScript (splits inline text):**
 ```js
 import { CharacterTextSplitter } from "@langchain/textsplitters";
@@ -28,15 +17,6 @@ console.log(chunks[1].pageContent);
 
 ## text_structure_based.py → text_structure_based.js
 
-**Python:**
-```python
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-text = "Space exploration has led to incredible..."
-splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=0)
-chunks = splitter.split_text(text)
-print(len(chunks))
-print(chunks)
-```
 **JavaScript:**
 ```js
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
@@ -51,16 +31,6 @@ chunks.forEach((chunk) => console.log(chunk.pageContent));
 
 ## markdown_splitting.py → markdown_splitting.js
 
-**Python:**
-```python
-from langchain.text_splitter import RecursiveCharacterTextSplitter, Language
-splitter = RecursiveCharacterTextSplitter.from_language(
-    language=Language.MARKDOWN,
-    chunk_size=200,
-    chunk_overlap=0,
-)
-chunks = splitter.split_text(text)
-```
 **JavaScript:**
 ```js
 import { MarkdownTextSplitter } from "@langchain/textsplitters";
@@ -73,17 +43,6 @@ const chunks = await splitter.createDocuments([markdownText]);
 
 ## python_code_splitting.py → code_splitting.js
 
-**Python (splits Python code):**
-```python
-from langchain.text_splitter import RecursiveCharacterTextSplitter, Language
-splitter = RecursiveCharacterTextSplitter.from_language(
-    language=Language.PYTHON,    # splits at class/def boundaries
-    chunk_size=300,
-    chunk_overlap=0,
-)
-chunks = splitter.split_text(text)
-print(chunks[1])
-```
 **JavaScript (splits JS code):**
 ```js
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
@@ -100,20 +59,6 @@ const chunks = await splitter.createDocuments([jsCode]);
 
 ## semantic_meaning_based.py → semantic_meaning_based.js
 
-**Python:**
-```python
-from langchain_experimental.text_splitter import SemanticChunker
-from langchain_openai.embeddings import OpenAIEmbeddings
-
-text_splitter = SemanticChunker(
-    OpenAIEmbeddings(),
-    breakpoint_threshold_type="standard_deviation",
-    breakpoint_threshold_amount=3
-)
-docs = text_splitter.create_documents([sample])
-print(len(docs))
-print(docs)
-```
 **JavaScript:**
 ```js
 import { SemanticChunker } from "@langchain/experimental/text_splitter";

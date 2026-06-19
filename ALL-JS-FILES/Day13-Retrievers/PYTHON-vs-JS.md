@@ -1,4 +1,4 @@
-# Day 13 — Python vs JavaScript: Retrievers
+﻿# Day 13 — Python vs JavaScript: Retrievers
 
 The Python version is in Jupyter notebooks. Here is the equivalent Python code vs JS.
 
@@ -6,21 +6,6 @@ The Python version is in Jupyter notebooks. Here is the equivalent Python code v
 
 ## Python (from langchain_retrievers.ipynb) → langchain_retrievers.js
 
-**Python — Basic Retriever:**
-```python
-from langchain_community.vectorstores import Chroma
-from langchain_openai import OpenAIEmbeddings
-
-vectorstore = Chroma.from_documents(documents=docs, embedding=embeddings)
-
-# Convert vectorstore to retriever
-retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
-
-# Retrieve relevant documents for a query
-results = retriever.invoke("Tell me about Paris landmarks")
-for doc in results:
-    print(doc.page_content)
-```
 **JavaScript:**
 ```js
 const vectorStore = await Chroma.fromDocuments(documents, embeddings);
@@ -34,17 +19,6 @@ retrieved.forEach((doc) => console.log(doc.pageContent));
 
 ## MMR Retriever
 
-**Python:**
-```python
-retriever = vectorstore.as_retriever(
-    search_type="mmr",
-    search_kwargs={
-        "k": 3,
-        "fetch_k": 6,
-        "lambda_mult": 0.5
-    }
-)
-```
 **JavaScript:**
 ```js
 const mmrRetriever = vectorStore.asRetriever({
@@ -62,12 +36,6 @@ const mmrRetriever = vectorStore.asRetriever({
 
 ## Wikipedia Retriever
 
-**Python:**
-```python
-from langchain_community.retrievers import WikipediaRetriever
-retriever = WikipediaRetriever(top_k_results=2, doc_content_chars_max=500)
-docs = retriever.invoke("LangChain AI framework")
-```
 **JavaScript:**
 ```js
 import { WikipediaQueryRun } from "@langchain/community/tools/wikipedia_query_run";
@@ -79,21 +47,6 @@ const result = await wikiTool.invoke("LangChain AI framework");
 
 ## Using Retriever in a Chain (RAG)
 
-**Python:**
-```python
-from langchain_core.runnables import RunnablePassthrough
-
-def format_docs(docs):
-    return "\n\n".join(doc.page_content for doc in docs)
-
-rag_chain = (
-    {"context": retriever | format_docs, "question": RunnablePassthrough()}
-    | rag_prompt
-    | model
-    | parser
-)
-answer = rag_chain.invoke("What is the capital of France?")
-```
 **JavaScript:**
 ```js
 import { RunnablePassthrough, RunnableSequence } from "@langchain/core/runnables";

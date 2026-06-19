@@ -1,15 +1,9 @@
-# Day 09 — Python vs JavaScript: Runnables
+﻿# Day 09 — Python vs JavaScript: Runnables
 
 ---
 
 ## runnable_sequence.py → runnable_sequence.js
 
-**Python:**
-```python
-from langchain.schema.runnable import RunnableSequence
-chain = RunnableSequence(prompt1, model, parser, prompt2, model, parser)
-print(chain.invoke({'topic':'AI'}))
-```
 **JavaScript:**
 ```js
 import { RunnableSequence } from "@langchain/core/runnables";
@@ -25,17 +19,6 @@ const result = await chain.invoke({ topic: "AI" });
 
 ## runnable_parallel.py → runnable_parallel.js
 
-**Python:**
-```python
-from langchain.schema.runnable import RunnableParallel, RunnableSequence
-parallel_chain = RunnableParallel({
-    'tweet': RunnableSequence(prompt1, model, parser),
-    'linkedin': RunnableSequence(prompt2, model, parser)
-})
-result = parallel_chain.invoke({'topic':'AI'})
-print(result['tweet'])
-print(result['linkedin'])
-```
 **JavaScript:**
 ```js
 import { RunnableParallel } from "@langchain/core/runnables";
@@ -52,21 +35,6 @@ console.log(result.linkedin);
 
 ## runnable_passthrough.py → runnable_passthrough.js
 
-**Python:**
-```python
-from langchain.schema.runnable import RunnableSequence, RunnableParallel, RunnablePassthrough
-
-joke_gen_chain = RunnableSequence(prompt1, model, parser)
-
-parallel_chain = RunnableParallel({
-    'joke': RunnablePassthrough(),           # pass the joke text as-is
-    'explanation': RunnableSequence(prompt2, model, parser)  # also explain it
-})
-
-final_chain = RunnableSequence(joke_gen_chain, parallel_chain)
-print(final_chain.invoke({'topic':'cricket'}))
-# result = { 'joke': '...', 'explanation': '...' }
-```
 **JavaScript:**
 ```js
 import { RunnableParallel, RunnablePassthrough } from "@langchain/core/runnables";
@@ -82,22 +50,6 @@ const explanation = await explainChain.invoke({ joke: jokeResult });
 
 ## runnable_lambda.py → runnable_lambda.js
 
-**Python:**
-```python
-from langchain.schema.runnable import RunnableLambda, RunnableParallel, RunnablePassthrough
-
-def word_count(text):
-    return len(text.split())
-
-joke_gen_chain = RunnableSequence(prompt, model, parser)
-parallel_chain = RunnableParallel({
-    'joke': RunnablePassthrough(),
-    'word_count': RunnableLambda(word_count)   # wraps plain function
-})
-final_chain = RunnableSequence(joke_gen_chain, parallel_chain)
-result = final_chain.invoke({'topic':'AI'})
-print("{} \n word count - {}".format(result['joke'], result['word_count']))
-```
 **JavaScript:**
 ```js
 import { RunnableLambda } from "@langchain/core/runnables";
@@ -115,20 +67,6 @@ const result = await chain.invoke({ topic: "AI" });
 
 ## runnable_branch.py → runnable_branch.js
 
-**Python:**
-```python
-from langchain.schema.runnable import RunnableSequence, RunnableBranch, RunnablePassthrough
-
-report_gen_chain = prompt1 | model | parser
-
-branch_chain = RunnableBranch(
-    (lambda x: len(x.split()) > 300, prompt2 | model | parser),   # if > 300 words → summarize
-    RunnablePassthrough()                                           # else → pass through
-)
-
-final_chain = RunnableSequence(report_gen_chain, branch_chain)
-print(final_chain.invoke({'topic':'Russia vs Ukraine'}))
-```
 **JavaScript:**
 ```js
 import { RunnableBranch, RunnableLambda } from "@langchain/core/runnables";

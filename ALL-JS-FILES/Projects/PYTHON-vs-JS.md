@@ -1,43 +1,8 @@
-# Projects — Python vs JavaScript
+﻿# Projects — Python vs JavaScript
 
 ---
 
 ## Project 1: Stock Market Data Enrichment
-
-**Python (Enriching Stock Market Data using the OpenAI API.ipynb):**
-```python
-from openai import OpenAI
-import pandas as pd
-
-client = OpenAI()
-
-# Load companies from CSV
-df = pd.read_csv('nasdaq_companies.csv')
-
-def classify_sector(company_name, ticker):
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[{"role": "user", "content": f"Classify {company_name} ({ticker}) into a sector. Return only sector name."}],
-        max_tokens=20,
-        temperature=0
-    )
-    return response.choices[0].message.content.strip()
-
-def generate_recommendation(company_name, ticker, sector, market_cap):
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[{"role": "user", "content": f"Give a 2-3 sentence investment recommendation for {company_name} ({ticker}), sector: {sector}, market cap: ${market_cap}B. Include Buy/Hold/Sell."}],
-        max_tokens=100,
-        temperature=0.7
-    )
-    return response.choices[0].message.content.strip()
-
-# Process all companies
-for _, row in df.iterrows():
-    sector = classify_sector(row['name'], row['ticker'])
-    recommendation = generate_recommendation(row['name'], row['ticker'], sector, row['market_cap_b'])
-    print(f"{row['ticker']}: {sector} | {recommendation}")
-```
 
 **JavaScript (stock_market_enrichment.js):**
 ```js
@@ -75,36 +40,6 @@ for (const company of companies) {
 ---
 
 ## Project 2: Paris Trip Planner
-
-**Python (Planning a Trip to Paris with the OpenAI API.ipynb):**
-```python
-from openai import OpenAI
-
-client = OpenAI()
-
-conversation_history = [
-    {"role": "system", "content": "You are an expert Paris travel guide..."}
-]
-
-def chat(user_message):
-    conversation_history.append({"role": "user", "content": user_message})
-    
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=conversation_history,
-        max_tokens=200,
-        temperature=0.8
-    )
-    
-    assistant_message = response.choices[0].message.content
-    conversation_history.append({"role": "assistant", "content": assistant_message})
-    return assistant_message
-
-# Ask questions
-print(chat("What are the must-see attractions in Paris?"))
-print(chat("What are the best neighborhoods to stay?"))
-print(chat("What Parisian foods must I try?"))
-```
 
 **JavaScript (paris_trip_planner.js):**
 ```js

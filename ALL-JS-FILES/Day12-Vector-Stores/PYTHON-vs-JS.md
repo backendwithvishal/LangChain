@@ -1,40 +1,10 @@
-# Day 12 — Python vs JavaScript: Vector Stores
+﻿# Day 12 — Python vs JavaScript: Vector Stores
 
 The Python version is in Jupyter notebooks (`.ipynb`). Here is the equivalent Python code and JS comparison.
 
 ---
 
 ## Python (from langchain_chroma.ipynb) → langchain_chroma.js
-
-**Python:**
-```python
-from langchain_openai import OpenAIEmbeddings
-from langchain_community.vectorstores import Chroma
-from langchain_core.documents import Document
-
-embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
-
-documents = [
-    Document(page_content="LangChain is a framework...", metadata={"topic": "langchain"}),
-    Document(page_content="Chroma is a vector database...", metadata={"topic": "vector-db"}),
-]
-
-# Create vector store from documents
-vectorstore = Chroma.from_documents(documents=documents, embedding=embeddings)
-
-# Similarity search
-results = vectorstore.similarity_search("How do vector databases work?", k=3)
-for doc in results:
-    print(doc.page_content)
-
-# Search with scores
-results_with_scores = vectorstore.similarity_search_with_score("vector databases", k=3)
-for doc, score in results_with_scores:
-    print(f"Score: {score:.4f} | {doc.page_content}")
-
-# Metadata filter
-filtered = vectorstore.similarity_search("database", k=3, filter={"topic": "vector-db"})
-```
 
 **JavaScript:**
 ```js
@@ -81,10 +51,6 @@ const filtered = await vectorStore.similaritySearch("database", 3, { topic: "vec
 
 ## Adding Documents Later
 
-**Python:**
-```python
-vectorstore.add_documents(new_docs)
-```
 **JavaScript:**
 ```js
 await vectorStore.addDocuments(newDocs);
@@ -92,10 +58,6 @@ await vectorStore.addDocuments(newDocs);
 
 ## Persistent Storage (save to disk)
 
-**Python:**
-```python
-vectorstore = Chroma(persist_directory="./chroma_db", embedding_function=embeddings)
-```
 **JavaScript:**
 ```js
 const vectorStore = await Chroma.fromDocuments(docs, embeddings, {

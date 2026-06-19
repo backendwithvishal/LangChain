@@ -1,55 +1,10 @@
-# Day 14 — Python vs JavaScript: RAG Pipeline
+﻿# Day 14 — Python vs JavaScript: RAG Pipeline
 
 The Python version is in a Jupyter notebook. Here is the full Python code vs JS comparison.
 
 ---
 
 ## Full RAG Pipeline: Python vs JavaScript
-
-**Python (from Retrieval Augmented Generation.ipynb):**
-```python
-from langchain_openai import ChatOpenAI, OpenAIEmbeddings
-from langchain_community.vectorstores import Chroma
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.output_parsers import StrOutputParser
-from langchain_core.runnables import RunnablePassthrough
-from langchain_community.document_loaders import TextLoader
-
-# INDEXING
-loader = TextLoader("my_document.txt")
-docs = loader.load()
-
-splitter = RecursiveCharacterTextSplitter(chunk_size=300, chunk_overlap=50)
-chunks = splitter.split_documents(docs)
-
-embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
-vectorstore = Chroma.from_documents(documents=chunks, embedding=embeddings)
-
-# RETRIEVAL + GENERATION
-retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
-
-rag_prompt = ChatPromptTemplate.from_messages([
-    ("system", "You are a helpful assistant. Answer ONLY from the context:\n{context}"),
-    ("human", "{question}")
-])
-
-def format_docs(docs):
-    return "\n\n".join(doc.page_content for doc in docs)
-
-model = ChatOpenAI(model="gpt-4o-mini", temperature=0)
-parser = StrOutputParser()
-
-rag_chain = (
-    {"context": retriever | format_docs, "question": RunnablePassthrough()}
-    | rag_prompt
-    | model
-    | parser
-)
-
-answer = rag_chain.invoke("What is LangChain?")
-print(answer)
-```
 
 **JavaScript (rag_pipeline.js):**
 ```js

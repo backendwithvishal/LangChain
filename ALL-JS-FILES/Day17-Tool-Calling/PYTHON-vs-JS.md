@@ -1,28 +1,8 @@
-# Day 17 — Python vs JavaScript: Tool Calling
+﻿# Day 17 — Python vs JavaScript: Tool Calling
 
 ---
 
 ## Python (from tool_calling_in_langchain.ipynb) vs JavaScript
-
-**Python — Define Tools:**
-```python
-from langchain_core.tools import tool
-from langchain_openai import ChatOpenAI
-
-@tool
-def get_conversion_factor(base_currency: str, target_currency: str) -> str:
-    """Gets the conversion rate between two currencies."""
-    rates = {"USD": 1.0, "EUR": 0.92, "GBP": 0.79, "JPY": 149.5}
-    factor = rates[target_currency] / rates[base_currency]
-    return str(factor)
-
-@tool
-def convert_currency(amount: float, conversion_factor: float) -> str:
-    """Converts an amount using a conversion factor."""
-    return str(amount * conversion_factor)
-
-tools = [get_conversion_factor, convert_currency]
-```
 
 **JavaScript — Define Tools:**
 ```js
@@ -47,32 +27,6 @@ const tools = [getConversionFactor, convertCurrency];
 **Key difference:** Python uses `@tool` decorator on a function. JS uses `new DynamicStructuredTool({})`.
 
 ---
-
-**Python — Bind tools and run:**
-```python
-model = ChatOpenAI(model="gpt-4o-mini")
-model_with_tools = model.bind_tools(tools)
-
-messages = [HumanMessage("What is 250 USD in EUR?")]
-
-while True:
-    response = model_with_tools.invoke(messages)
-    messages.append(response)
-    
-    if not response.tool_calls:
-        print(response.content)
-        break
-    
-    for tool_call in response.tool_calls:
-        tool_name = tool_call["name"]
-        tool_args = tool_call["args"]
-        tool_result = eval(f"{tool_name}({tool_args})")  # run the tool
-        
-        messages.append(ToolMessage(
-            content=str(tool_result),
-            tool_call_id=tool_call["id"]
-        ))
-```
 
 **JavaScript — Bind tools and run:**
 ```js

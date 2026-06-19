@@ -1,17 +1,9 @@
-# Day 10 — Python vs JavaScript: Document Loaders
+﻿# Day 10 — Python vs JavaScript: Document Loaders
 
 ---
 
 ## csv_loader.py → csv_loader.js
 
-**Python:**
-```python
-from langchain_community.document_loaders import CSVLoader
-loader = CSVLoader(file_path='Social_Network_Ads.csv')
-docs = loader.load()
-print(len(docs))
-print(docs[1])
-```
 **JavaScript:**
 ```js
 import { CSVLoader } from "@langchain/community/document_loaders/fs/csv";
@@ -26,14 +18,6 @@ console.log("First Document:", docs[0].pageContent);
 
 ## directory_loader.py → directory_loader.js
 
-**Python:**
-```python
-from langchain_community.document_loaders import DirectoryLoader, PyPDFLoader
-loader = DirectoryLoader(path='books', glob='*.pdf', loader_cls=PyPDFLoader)
-docs = loader.lazy_load()
-for document in docs:
-    print(document.metadata)
-```
 **JavaScript:**
 ```js
 import { DirectoryLoader } from "langchain/document_loaders/fs/directory";
@@ -53,15 +37,6 @@ docs.forEach((doc) => console.log(doc.metadata));
 
 ## pdf_loader.py → pdf_loader.js
 
-**Python:**
-```python
-from langchain_community.document_loaders import PyPDFLoader
-loader = PyPDFLoader('dl-curriculum.pdf')
-docs = loader.load()
-print(len(docs))
-print(docs[0].page_content)
-print(docs[1].metadata)
-```
 **JavaScript:**
 ```js
 import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
@@ -79,16 +54,6 @@ docs.forEach((doc, i) => {
 
 ## text_loader.py → text_loader.js
 
-**Python:**
-```python
-from langchain_community.document_loaders import TextLoader
-loader = TextLoader('cricket.txt', encoding='utf-8')
-docs = loader.load()
-print(docs[0].page_content)
-# chain to summarize
-chain = prompt | model | parser
-print(chain.invoke({'poem': docs[0].page_content}))
-```
 **JavaScript:**
 ```js
 import { TextLoader } from "langchain/document_loaders/fs/text";
@@ -104,15 +69,6 @@ const summary = await chain.invoke({ text: docs[0].pageContent });
 
 ## webbase_loader.py → webbase_loader.js
 
-**Python:**
-```python
-from langchain_community.document_loaders import WebBaseLoader
-url = 'https://www.flipkart.com/apple-macbook-air-m2-...'
-loader = WebBaseLoader(url)
-docs = loader.load()
-chain = prompt | model | parser
-print(chain.invoke({'question':'What is the product?', 'text':docs[0].page_content}))
-```
 **JavaScript:**
 ```js
 import { CheerioWebBaseLoader } from "@langchain/community/document_loaders/web/cheerio";
