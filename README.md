@@ -242,11 +242,3 @@ node "Projects/js-projects/paris_trip_planner.js"
 | `AgentExecutor` | `AgentExecutor(agent, tools)` | `createReactAgent({ llm, tools })` |
 
 ---
-
-## Node.js Version Requirement
-
-Node.js **18+** is required for native `fetch`, top-level `await`, and ES Modules support.
-
-```bash
-node --version  # Should be v18.0.0 or higher
-```
